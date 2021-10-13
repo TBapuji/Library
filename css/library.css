@@ -1,0 +1,24 @@
+﻿
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.heading {
+    border: 2px solid rgb(79, 185, 227);
+}
+.container {
+    column-count: 2;
+    column-gap: 40px;
+    column-rule: 4px dotted rgb(79, 185, 227);
+}
+
+.card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    background-color: rgb(207, 232, 220);
+    border: 2px solid rgb(79, 185, 227);
+    padding: 10px;
+    margin: 0 0 1em 0;
+}
