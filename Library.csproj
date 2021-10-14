@@ -132,6 +132,7 @@
     <Compile Include="Helpers\Cache.cs" />
     <Compile Include="Helpers\ConfigurationSettings.cs" />
     <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\WordItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\LibraryTests.cs" />
   </ItemGroup>

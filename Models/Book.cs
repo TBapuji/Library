@@ -12,6 +12,6 @@ namespace Library.Models
         public string FileName { get; set; }
 
         //TODO - change this totally
-        public List<string> Content { get; set; }
+        public WordItem[] Words { get; set; }
     }
 }

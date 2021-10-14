@@ -33,7 +33,7 @@ namespace Library.Controllers
         }
 
         //[Route("api/books/{Id}?query={query}")]
-        //[Route("/{Id}?query={query}")]
+        [Route("{Id}/{query}")]
         [HttpGet]
         public Dictionary<string,int> SearchBook(int id, string query)
         {

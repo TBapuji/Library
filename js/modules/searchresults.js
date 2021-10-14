@@ -8,7 +8,7 @@ import { createNode, append } from "/js/helpers/library.js";
 class searchresults {
     resultsList() { console.log('this is from the searchresults class:resultsList()'); }
 
-
+    // put a message if no results were returned
 
     //do a fetch request here to get the list of results
 

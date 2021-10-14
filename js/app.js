@@ -51,6 +51,8 @@ class App {
             const searchString = e.target.value.toLowerCase();
             console.log(`search.addEventListener ${searchString}`);
 
+            let resultsbanner = document.getElementById('resultsbanner');
+
             //return resultlist.map(function (item) {
             //    let li = createnode('li');
             //    let span = createnode('span');

@@ -35,6 +35,8 @@ namespace Library.DAL
                             "\n",
                             ".",
                             ",",
+                            ":",
+                            ";",
                             "!",
                             "*",
                             "(",
@@ -62,7 +64,7 @@ namespace Library.DAL
             throw new NotImplementedException();
         }
 
-        Dictionary<string, int> GetSerachresults(string[] wordsToSearch)
+        Dictionary<string, int> GetSearchResults(string[] wordsToSearch)
         //  static List<string> GetSerachresults(string[] wordsToSearch)
         {
             Dictionary<string, int> searchResults = new Dictionary<string, int>();
@@ -100,6 +102,9 @@ namespace Library.DAL
 
         public Dictionary<string, int> SearchBook(int id, string searchString = "", int numberOfCharsSearchTrigger = 3, int numnberOfRecordsReturned = 10, int minWordLengthToReturn = 5)
         {
+
+            //TODO -try to get from the Memroy Cache at this point.
+            // if null then do the below and populate the cache
             Book book = GetBooks(id);
             Dictionary<string, int> searchResults = new Dictionary<string, int>();
             try
@@ -109,13 +114,14 @@ namespace Library.DAL
                             ConfigurationSettings.GetSetting("bookStorePath") + book.FileName,
                             System.Text.Encoding.UTF8))
                 {
-
+                    // TODO put into Helpers.StringFunctions
+                    // public string[] strings GetStringArray(StreamReader streamReader)
                     string content = sr.ReadToEnd();
 
                     //split into word array
                     string[] words = content.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
 
-                    searchResults = GetSerachresults(words);
+                    searchResults = GetSearchResults(words);
 
                     // HOW FAST IS THIS?? CAN WE MOVE IT DOWNSTREAM??
                     // 
