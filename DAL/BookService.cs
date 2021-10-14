@@ -64,12 +64,12 @@ namespace Library.DAL
             throw new NotImplementedException();
         }
 
-        Dictionary<string, int> GetSearchResults(string[] wordsToSearch)
+        List<WordItem> GetSearchResults(string searchString, string[] wordsToSearch)
         //  static List<string> GetSerachresults(string[] wordsToSearch)
         {
-            Dictionary<string, int> searchResults = new Dictionary<string, int>();
+            List<WordItem> searchResults = new List<WordItem>();
 
-            string searchTerm = "the";
+            //string searchTerm = "the";
 
             //var matchQuery = from word in wordsToSearch
             //                     //where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
@@ -78,35 +78,36 @@ namespace Library.DAL
             //                 select word;
 
             var matchQuery = from word in wordsToSearch
-                             where word.ToLowerInvariant().StartsWith(searchTerm.ToLowerInvariant())
+                             where word.ToLowerInvariant().StartsWith(searchString.ToLowerInvariant())
                              //orderby word.Length descending
                              group word by word
                              into grp
-                             select new
+                             select new WordItem
                              {
                                  Word = grp.Key,
                                  Count = grp.Select(w => w).Count()
                              };
-            var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count).ToDictionary(p => p.Word, p => p.Count);
+            // var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count).ToDictionary(p => p.Word, p => p.Count);
+            var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count);
             int wordCount = matchQuery.Count();
 
             int i = 0;
             foreach(var m in matchQueryOrdered)
             {
-                Console.WriteLine($"{i} : {m.Key}, {m.Value}");
+                Console.WriteLine($"{i} : {m.Word}, {m.Count}");
                 i++;
             }
-            return (Dictionary<string, int>)matchQueryOrdered;
+            return matchQueryOrdered.ToList();
         }
 
 
-        public Dictionary<string, int> SearchBook(int id, string searchString = "", int numberOfCharsSearchTrigger = 3, int numnberOfRecordsReturned = 10, int minWordLengthToReturn = 5)
+        public List<WordItem> SearchBook(int id, string searchString = "", int numberOfCharsSearchTrigger = 3, int numnberOfRecordsReturned = 10, int minWordLengthToReturn = 5)
         {
 
             //TODO -try to get from the Memroy Cache at this point.
             // if null then do the below and populate the cache
             Book book = GetBooks(id);
-            Dictionary<string, int> searchResults = new Dictionary<string, int>();
+            List<WordItem> searchResults = new List<WordItem>();
             try
             {
                 // Open the text file using a stream reader.
@@ -121,7 +122,7 @@ namespace Library.DAL
                     //split into word array
                     string[] words = content.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
 
-                    searchResults = GetSearchResults(words);
+                    searchResults = GetSearchResults(searchString, words);
 
                     // HOW FAST IS THIS?? CAN WE MOVE IT DOWNSTREAM??
                     // 

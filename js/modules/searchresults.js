@@ -3,6 +3,8 @@
 export { searchresults }
 import { createNode, append } from "/js/helpers/library.js";
 
+let libraryUrl = 'http://localhost:49265/api/books/1/';
+
 //let search = document.getElementById('search');
 
 class searchresults {
@@ -17,13 +19,28 @@ class searchresults {
 
 const ul = document.getElementById('resultlist');
 
-export function displayBooks(x) {
-    let li = createNode('li');
-    let span = createNode('span');
-    let divEmail = createNode('div');
-    span.innerHTML = `${x.name.first} ${x.name.last}, ${x.name.title}`;
-    divEmail.innerHTML = `${x.email}`;
-    append(li, span);
-    append(li, divEmail);
-    append(ul, li);
-}
+//export function displayBooks() {
+//    search.addEventListener('keyup', (e) => {
+
+//        const searchString = e.target.value.toLowerCase();
+//        console.log(`In searchresult.js ${libraryUrl}${searchString}`);
+//        let librarySearchUrl = libraryUrl + searchString;
+
+//        fetch(librarySearchUrl)
+//            .then((resp) => resp.json())
+//            .then(function (data) {
+//                let resultlist = data;
+//                return resultlist.map(function (data) {
+//                    let li = createNode('li');
+//                    let span = createNode('span');
+//                    span.innerHTML = `${data.Word} ${data.Count}`;
+//                    append(li, span);
+//                    append(ul, li);
+//                })
+//            })
+//            .catch(function (error) {
+//          //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
+//                console.log(`error...  ${error}`);
+//            });
+//    })
+//}
