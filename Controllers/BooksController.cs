@@ -25,11 +25,18 @@ namespace Library.Controllers
         // can we avoid the need 
         // SE TINN C - WHAT ARE THE NAMES FOR THERES
         //[Route("api/books/{Id}")]
+        //[Route("{Id}")]
+        //[HttpGet]
+        //public Book Books(int id)
+        //{
+        //    return bookService.GetBooks(id);
+        //}
+
         [Route("{Id}")]
         [HttpGet]
-        public Book Books(int id)
+        public List<WordItem> Books(int id)
         {
-            return bookService.GetBooks(id);
+            return bookService.SearchBook(id);
         }
 
         //[Route("api/books/{Id}?query={query}")]

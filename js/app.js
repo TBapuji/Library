@@ -13,9 +13,11 @@ import { getBookList } from "/js/modules/book.js";
 
 //let libraryUrl = 'https://randomuser.me/api/?results=10';
 let libraryUrl = 'http://localhost:49265/api/books/1/';
-
-
-const ul = document.getElementById('resultlist');
+let referrer = document.referrer;
+//let currentUrl = window.location.href;
+let currentUrl = document.URL;
+console.log(`Referrer is ${referrer}`);
+const ul = document.getElementById('booklist');
 
 class App {
 
@@ -33,33 +35,68 @@ class App {
         // then either append to the container element in the html file, or add the concatenated string to the innerHTML
 
         let list = getBookList();
-        console.log(list);
-
-
+        defaultBookSearch();
+        bookSearch();
     }
 }
+function defaultBookSearch()
+{
+    ul.addEventListener('click', (e) => { 
+        //const searchString = e.target.value.toLowerCase();
 
-search.addEventListener('keyup', (e) => {
+        // nearly there... 
+        //var idval = e.currentTarget.querySelector('span[id]');
+        //var idval = e.target.querySelector('span[id]');
+         //var idval = e.target;
+        var idval = e.target.closest('span');
+        alert(idval==true);
+        //alert(idval.getAttribute('id'));
+        
+    let librarySearchUrl = libraryUrl;// + searchString;
+        console.log(librarySearchUrl);
+      //  ul.innerHTML = '';
+        //fetch(librarySearchUrl)
+        //    .then((resp) => resp.json())
+        //    .then(function (data) {
+        //        let resultlist = data;
+        //        return resultlist.map(function (data) {
+        //            let li = createNode('li');
+        //            let span = createNode('span');
+        //            span.innerHTML = `${data.Word} ${data.Count}`;
+        //            append(li, span);
+        //            append(ul, li);
+        //        })
+        //    })
+        //    .catch(function (error) {
+        //        //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
+        //        console.log(`error...  ${error}`);
+        //    });
+    });
+}
 
-    const searchString = e.target.value.toLowerCase();
-    let librarySearchUrl = libraryUrl + searchString;
-    console.log(librarySearchUrl);
-    ul.innerHTML = '';
-    fetch(librarySearchUrl)
-        .then((resp) => resp.json())
-        .then(function (data) {
-            let resultlist = data;
-            return resultlist.map(function (data) {
-                let li = createNode('li');
-                let span = createNode('span');
-                span.innerHTML = `${data.Word} ${data.Count}`;
-                append(li, span);
-                append(ul, li);
+function bookSearch() {
+    search.addEventListener('keyup', (e) => {
+
+        const searchString = e.target.value.toLowerCase();
+        let librarySearchUrl = libraryUrl + searchString;
+        console.log(librarySearchUrl);
+        ul.innerHTML = '';
+        fetch(librarySearchUrl)
+            .then((resp) => resp.json())
+            .then(function (data) {
+                let resultlist = data;
+                return resultlist.map(function (data) {
+                    let li = createNode('li');
+                    let span = createNode('span');
+                    span.innerHTML = `${data.Word} ${data.Count}`;
+                    append(li, span);
+                    append(ul, li);
+                })
             })
-        })
-        .catch(function (error) {
-            //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
-            console.log(`error...  ${error}`);
-        });
-})
+            .catch(function (error) {
+                //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
+                console.log(`error...  ${error}`);
+            });
+    })
+}
 new App().go();

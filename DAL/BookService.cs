@@ -64,40 +64,50 @@ namespace Library.DAL
             throw new NotImplementedException();
         }
 
-        List<WordItem> GetSearchResults(string searchString, string[] wordsToSearch)
+        List<WordItem> GetSearchResults(string[] wordsToSearch, string searchString = "")
         //  static List<string> GetSerachresults(string[] wordsToSearch)
         {
             List<WordItem> searchResults = new List<WordItem>();
 
-            //string searchTerm = "the";
+            if(String.IsNullOrWhiteSpace(searchString))
+            {
+                var matchQuery2 = from word in wordsToSearch
+                                              where word.ToLowerInvariant().StartsWith(searchString.ToLowerInvariant())
+                                              //orderby word.Length descending
+                                              group word by word
+                                              into grp
+                                              orderby grp.Count()
+                                              select new WordItem
+                                              {
+                                                  Word = grp.Key,
+                                                  Count = grp.Select(w => w).Count()
+                                              };
 
-            //var matchQuery = from word in wordsToSearch
-            //                     //where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-            //                 where word.ToLowerInvariant().StartsWith(searchTerm.ToLowerInvariant())
-            //                 orderby word.Length descending
-            //                 select word;
+                return matchQuery2.ToList();
+            }
 
-            var matchQuery = from word in wordsToSearch
-                             where word.ToLowerInvariant().StartsWith(searchString.ToLowerInvariant())
-                             //orderby word.Length descending
-                             group word by word
+            var matchQuery = (List<WordItem>)(from word in wordsToSearch
+                                          where word.ToLowerInvariant().StartsWith(searchString.ToLowerInvariant())
+                                          //orderby word.Length descending
+                                          group word by word
                              into grp
-                             select new WordItem
-                             {
-                                 Word = grp.Key,
-                                 Count = grp.Select(w => w).Count()
-                             };
+                                          select new WordItem
+                                          {
+                                              Word = grp.Key,
+                                              Count = grp.Select(w => w).Count()
+                                          });
             // var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count).ToDictionary(p => p.Word, p => p.Count);
             var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count);
             int wordCount = matchQuery.Count();
 
-            int i = 0;
-            foreach(var m in matchQueryOrdered)
-            {
-                Console.WriteLine($"{i} : {m.Word}, {m.Count}");
-                i++;
-            }
-            return matchQueryOrdered.ToList();
+            //int i = 0;
+            //foreach(var m in matchQueryOrdered)
+            //{
+            //    Console.WriteLine($"{i} : {m.Word}, {m.Count}");
+            //    i++;
+            //}
+            // return matchQueryOrdered.ToList();
+            return matchQuery.ToList();
         }
 
 
@@ -122,7 +132,7 @@ namespace Library.DAL
                     //split into word array
                     string[] words = content.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
 
-                    searchResults = GetSearchResults(searchString, words);
+                    searchResults = GetSearchResults(words, searchString);
 
                     // HOW FAST IS THIS?? CAN WE MOVE IT DOWNSTREAM??
                     // 
@@ -154,7 +164,7 @@ namespace Library.DAL
             return searchResults;
         }
 
-    
+
         // TODO Have an overload for GetBooks with
         // a) the number of chars to trigger the search 
         // b) the number of results to return

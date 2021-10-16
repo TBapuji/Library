@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\library.css" />
+    <Content Include="css\library2.css" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="index2.html" />

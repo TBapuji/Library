@@ -1,5 +1,5 @@
 ﻿export { book, getBookList }
-import { createNode, append } from "/js/helpers/library.js";
+import { createNode, setClassName, append } from "/js/helpers/library.js";
 import { urls } from "/js/helpers/settings.js";
 
 class book {
@@ -26,12 +26,15 @@ function getBookList() {
             return booklist.map(function (data) {
                 let li = createNode('li');
                 let span = createNode('span');
-                let a = createNode('a');
-                a.href = `${bookUrl}/${data.ID}`;
-                a.innerHTML = `${data.ID} ${data.Title}`;
-                append(span, a);
-                append(li, span);
+                //let a = createNode('a');
+                //a.classList.add('tt');
+                //a.href = `${bookUrl}/${data.ID}`;
+                //a.innerHTML = `${data.ID} ${data.Title}`;
+                span.innerHTML = `${data.ID} ${data.Title}`;
+                span.id = `${data.ID}`;
                 append(ul, li);
+                append(li, span);
+                //append(span, a);
             })
         })
         .catch(function (error) {

@@ -5,15 +5,11 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
-.heading {
-    border: 2px solid rgb(79, 185, 227);
-}
+
+
 .container {
-    column-count: 2;
-    column-gap: 40px;
-    column-rule: 4px dotted rgb(79, 185, 227);
-    float: left;
-    width: 50%;
+    /*column-gap: 40px;
+    column-rule: 4px dotted rgb(79, 185, 227);*/
 }
 
 .card {
