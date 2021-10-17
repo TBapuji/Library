@@ -27,18 +27,8 @@ namespace Library.DAL
         //TODO - put in separate class and make public accessor
         public static List<WordItem> CaptialiseFirstLetter(List<WordItem> words)
         {
-            //string[] capitalisedWords = new string[] { };
-
             for(int i = 0; i < words.Count; i++)
             {
-                //if(!String.IsNullOrEmpty(words[i].Word))
-                //{
-                //    capitalisedWords[i] = "";
-                //}
-                //else
-                //{
-                //    capitalisedWords[i] = char.ToUpper(words[i][0]) + words[i].Substring(1);
-                //}
                 words[i].Word = char.ToUpper(words[i].Word[0]) + words[i].Word.Substring(1);
             }
             return words;
@@ -61,12 +51,24 @@ namespace Library.DAL
                             ":",
                             ";",
                             "!",
+                            "?",
                             "*",
                             "(",
                             ")",
                             "[",
                             "]",
-                            "#"
+                            "<",
+                            ">",
+                            "#",
+                            "-",
+                            "_",
+                            "—",
+                            "\\",
+                            "/",
+                            "\"",
+                            "”",
+                            "'",
+                            "’"
                           };
 
         private List<string> GetBookTitles(string directoryPath)
@@ -143,7 +145,7 @@ namespace Library.DAL
             // var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count).ToDictionary(p => p.Word, p => p.Count);
             var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count);
             //int wordCount = matchQuery.Count();
-            return matchQuery.ToList();
+            return matchQueryOrdered.ToList();
         }
 
 

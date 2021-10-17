@@ -144,12 +144,10 @@
     <Content Include="css\library2.css" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
-    <Content Include="index2.html" />
     <Content Include="js\app.js" />
     <Content Include="js\helpers\library.js" />
     <Content Include="js\modules\book.js" />
     <Content Include="js\modules\searchresults.js" />
-    <Content Include="js\modules\module1.js" />
     <Content Include="Resources\A Tale Of Two Cities.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

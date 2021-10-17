@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/library2.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="always">
-
     <title>Library</title>
 </head>
 <body>
@@ -13,20 +11,32 @@
     <header role="heading">
         <h1 class="heading">Library</h1>
     </header>
+    <!--<div class="float-parent-element">
+        <div class="float-child-element">
+            <div class="left">Float Column 1a</div>
+        </div>
+        <div class="float-child-element">
+            <div class="right">Float Column 2</div>
+        </div>
+    </div>-->
     <main role="main" class="main">
         <div class="container">
             <div class="card">
-                <h2>List of Available Books</h2>
-                <nav>
-                    <ul id="booklist"></ul>
-                </nav>
-                <!--</div>
-                <div class="card">-->
-                <h2 id="resultsbanner">Search Results</h2>
-                <label for="search">Search Word String: </label>
-                <div><input type="text" id="search" placeholder="Search Text..." title="Enter a string of characters (letters) to search your chosen book" /></div>
-                <div>
-                    <ul id="resultlist"></ul>
+                <div class="left">
+                    <h2>List of Available Books</h2>
+                    <nav>
+                        <ul id="booklist"></ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="card">
+                <div class="right">
+                    <h2 id="resultsbanner">Search Results</h2>
+                    <label for="search">Search Word String: </label>
+                    <div><input type="text" id="search" placeholder="Search Text..." title="Enter a string of characters (letters) to search your chosen book" /></div>
+                    <div>
+                        <ul id="resultlist"></ul>
+                    </div>
                 </div>
             </div>
         </div>
