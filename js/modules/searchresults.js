@@ -17,30 +17,29 @@ class searchresults {
 
 }
 
-const ul = document.getElementById('resultlist');
 
-//export function displayBooks() {
-//    search.addEventListener('keyup', (e) => {
+export function displayBooks() {
+    search.addEventListener('keyup', (e) => {
 
-//        const searchString = e.target.value.toLowerCase();
-//        console.log(`In searchresult.js ${libraryUrl}${searchString}`);
-//        let librarySearchUrl = libraryUrl + searchString;
+        const searchString = e.target.value.toLowerCase();
+        console.log(`In searchresult.js ${libraryUrl}${searchString}`);
+        let librarySearchUrl = libraryUrl + searchString;
 
-//        fetch(librarySearchUrl)
-//            .then((resp) => resp.json())
-//            .then(function (data) {
-//                let resultlist = data;
-//                return resultlist.map(function (data) {
-//                    let li = createNode('li');
-//                    let span = createNode('span');
-//                    span.innerHTML = `${data.Word} ${data.Count}`;
-//                    append(li, span);
-//                    append(ul, li);
-//                })
-//            })
-//            .catch(function (error) {
-//          //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
-//                console.log(`error...  ${error}`);
-//            });
-//    })
-//}
+        fetch(librarySearchUrl)
+            .then((resp) => resp.json())
+            .then(function (data) {
+                let resultlist = data;
+                return resultlist.map(function (data) {
+                    let li = createNode('li');
+                    let span = createNode('span');
+                    span.innerHTML = `${data.Word} ${data.Count}`;
+                    append(li, span);
+                    append(ul, li);
+                })
+            })
+            .catch(function (error) {
+          //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
+                console.log(`error...  ${error}`);
+            });
+    })
+}

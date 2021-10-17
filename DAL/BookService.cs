@@ -21,6 +21,29 @@ namespace Library.DAL
 
         //private string bookStore = @"C:\test\LibrarySample\LibrarySample-master\Resources";
 
+        public delegate List<WordItem> ProcessWords(List<WordItem> words);
+        ProcessWords wordArray = CaptialiseFirstLetter;
+
+        //TODO - put in separate class and make public accessor
+        public static List<WordItem> CaptialiseFirstLetter(List<WordItem> words)
+        {
+            //string[] capitalisedWords = new string[] { };
+
+            for(int i = 0; i < words.Count; i++)
+            {
+                //if(!String.IsNullOrEmpty(words[i].Word))
+                //{
+                //    capitalisedWords[i] = "";
+                //}
+                //else
+                //{
+                //    capitalisedWords[i] = char.ToUpper(words[i][0]) + words[i].Substring(1);
+                //}
+                words[i].Word = char.ToUpper(words[i].Word[0]) + words[i].Word.Substring(1);
+            }
+            return words;
+        }
+
         private List<Book> books = new List<Book>();
 
         private BookContext bookContext = new BookContext();
@@ -58,11 +81,28 @@ namespace Library.DAL
 
         }
 
+        //TODO move to another file
+        public static string[] StandardiseCase(string[] words)
+        {
+            for(int i=0; i<words.Length;i++)
+            {
+                words[i] = words[i].ToLowerInvariant();
+            }
+            return words;
+        }
+
+        //TODO move to another file, use delegate
+        public static List<WordItem> RemoveNonWordStrings(List<WordItem> words)
+        {
+            return new List<WordItem>();
+        }
+
         //TODO - SOrt this!!!
         string IBookService.SearchBook(int Id)
         {
             throw new NotImplementedException();
         }
+        public delegate List<WordItem> PerformCalculation(string[] wordsToSearch, string searchString);
 
         List<WordItem> GetSearchResults(string[] wordsToSearch, string searchString = "")
         //  static List<string> GetSerachresults(string[] wordsToSearch)
@@ -71,42 +111,38 @@ namespace Library.DAL
 
             if(String.IsNullOrWhiteSpace(searchString))
             {
-                var matchQuery2 = from word in wordsToSearch
-                                              where word.ToLowerInvariant().StartsWith(searchString.ToLowerInvariant())
-                                              //orderby word.Length descending
-                                              group word by word
+                var matchQuery2 = (from word in wordsToSearch
+                                       //where word.ToLowerInvariant().StartsWith(searchString.ToLowerInvariant())
+                                   where word.Length >= 5
+                                   //orderby word.Length descending
+                                   group word by word
                                               into grp
-                                              orderby grp.Count()
-                                              select new WordItem
-                                              {
-                                                  Word = grp.Key,
-                                                  Count = grp.Select(w => w).Count()
-                                              };
+                                   orderby grp.Count() descending
+                                   select new WordItem
+                                   {
+                                       Word = grp.Key,
+                                       Count = grp.Select(w => w).Count()
+                                   });
+                // .Take(10);
+                var ordered = matchQuery2.OrderByDescending(m => m.Count).Take(10);
+                //int count = matchQuery2.Count();
 
-                return matchQuery2.ToList();
+                return ordered.ToList();
             }
 
-            var matchQuery = (List<WordItem>)(from word in wordsToSearch
-                                          where word.ToLowerInvariant().StartsWith(searchString.ToLowerInvariant())
-                                          //orderby word.Length descending
-                                          group word by word
-                             into grp
-                                          select new WordItem
-                                          {
-                                              Word = grp.Key,
-                                              Count = grp.Select(w => w).Count()
-                                          });
+            var matchQuery = (from word in wordsToSearch
+                              where word.ToLowerInvariant().StartsWith(searchString.ToLowerInvariant())
+                              //orderby word.Length descending
+                              group word by word
+                                              into grp
+                              select new WordItem
+                              {
+                                  Word = grp.Key,
+                                  Count = grp.Select(w => w).Count()
+                              });
             // var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count).ToDictionary(p => p.Word, p => p.Count);
             var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count);
-            int wordCount = matchQuery.Count();
-
-            //int i = 0;
-            //foreach(var m in matchQueryOrdered)
-            //{
-            //    Console.WriteLine($"{i} : {m.Word}, {m.Count}");
-            //    i++;
-            //}
-            // return matchQueryOrdered.ToList();
+            //int wordCount = matchQuery.Count();
             return matchQuery.ToList();
         }
 
@@ -132,7 +168,15 @@ namespace Library.DAL
                     //split into word array
                     string[] words = content.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
 
+                    words = StandardiseCase(words);
+                    // words = RemoveWordsWithPunctuation(words);
+
+                    // ***
+                    // TODO - Cache "words" string array here for re-use
+                    // ***
+
                     searchResults = GetSearchResults(words, searchString);
+                    searchResults = CaptialiseFirstLetter(searchResults);
 
                     // HOW FAST IS THIS?? CAN WE MOVE IT DOWNSTREAM??
                     // 

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/library2.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="always">
+    
     <title>Library</title>
 </head>
 <body>
@@ -16,15 +18,10 @@
             <div class="card">
                 <h2>List of Available Books</h2>
                 <nav>
-                    <ul id="booklist">
-                        <li><span><a class="tt" href="http://localhost:49265/api/books/1">1 A Tale Of Two Cities</a></span></li>
-                    </ul>
-                    <ul id="booklist2">
-                        <li><span><a href="test.html" class="tt">test</a></span></li>
-                    </ul>
+                    <ul id="booklist"></ul>
                 </nav>
-            </div>
-            <div class="card">
+            <!--</div>
+            <div class="card">-->
                 <h2 id="resultsbanner">Search Results</h2>
                 <label for="search">Search Word String: </label>
                 <div><input type="text" id="search" placeholder="Search Text..." title="Enter a string of characters (letters) to search your chosen book" /></div>

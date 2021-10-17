@@ -16,7 +16,7 @@ function getBookList() {
     let ul = document.getElementById('booklist');
     //booklist.innerHTML = "<span>HELLO</span>";
 
-    fetch(bookUrl)
+    fetch(bookUrl, {  referrer: "librarySearchUrl", referrerPolicy: "unsafe-url" })
         .then((resp) => resp.json())
         .then(function (data) {
             console.log(data);

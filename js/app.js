@@ -4,7 +4,7 @@ import { createNode, append } from "/js/helpers/library.js";
 
 
 import { getBookList } from "/js/modules/book.js";
-//import { displayBooks } from "/js/modules/searchresults.js";
+import { displayBooks } from "/js/modules/searchresults.js";
 
 //const db = displayBooks;
 
@@ -12,12 +12,18 @@ import { getBookList } from "/js/modules/book.js";
 //let libraryUrl = 'https://hp-api.herokuapp.com/api/characters';
 
 //let libraryUrl = 'https://randomuser.me/api/?results=10';
-let libraryUrl = 'http://localhost:49265/api/books/1/';
-let referrer = document.referrer;
-//let currentUrl = window.location.href;
-let currentUrl = document.URL;
-console.log(`Referrer is ${referrer}`);
+
+const baseUrl = document.URL;
+const apiPath = '/api/books/';
+//let libraryUrl = 'http://localhost:49265/api/books/';
+let libraryUrl = baseUrl + apiPath;
+let referrerUrl = '';
+let librarySearchUrl = '';
+
 const ul = document.getElementById('booklist');
+const ulresults = document.getElementById('resultlist');
+
+let search = document.getElementById('search');
 
 class App {
 
@@ -28,14 +34,15 @@ class App {
 
     go() {
 
-
         // retrieve and display the list of books
 
         // here you can do that mappy loopy business with append ul, li, span etc
         // then either append to the container element in the html file, or add the concatenated string to the innerHTML
 
-        let list = getBookList();
+       // let list = getBookList();
+        getBookList();
         defaultBookSearch();
+
         bookSearch();
     }
 }
@@ -49,38 +56,49 @@ function defaultBookSearch()
         //var idval = e.target.querySelector('span[id]');
          //var idval = e.target;
         var idval = e.target.closest('span');
-        alert(idval==true);
+        //alert(idval==true);
+        //alert(`${idval.getAttribute('id')}, ${idval.getAttribute('id')==null}`);
         //alert(idval.getAttribute('id'));
+        let id = idval.getAttribute('id');
+
+        ulresults.innerHTML = '';
         
-    let librarySearchUrl = libraryUrl;// + searchString;
-        console.log(librarySearchUrl);
-      //  ul.innerHTML = '';
-        //fetch(librarySearchUrl)
-        //    .then((resp) => resp.json())
-        //    .then(function (data) {
-        //        let resultlist = data;
-        //        return resultlist.map(function (data) {
-        //            let li = createNode('li');
-        //            let span = createNode('span');
-        //            span.innerHTML = `${data.Word} ${data.Count}`;
-        //            append(li, span);
-        //            append(ul, li);
-        //        })
-        //    })
-        //    .catch(function (error) {
-        //        //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
-        //        console.log(`error...  ${error}`);
-        //    });
+        librarySearchUrl = libraryUrl + id;// + searchString;
+
+            console.log(`librarySearchUrl: ${librarySearchUrl}`);
+        fetch(librarySearchUrl, { referrer: "librarySearchUrl", referrerPolicy:"unsafe-url" })
+            .then((resp) => {
+                referrerUrl = resp.url; 
+                return resp.json();
+            })
+            .then(function (data) {
+                let resultlist = data;
+                return resultlist.map(function (data) {
+                    let li = createNode('li');
+                    let span = createNode('span');
+                    span.innerHTML = `${data.Word} ${data.Count}`;
+                    append(li, span);
+                    append(ulresults , li);
+                })
+            })
+            .catch(function (error) {
+                //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
+                console.log(`error...  ${error}`);
+            });
     });
 }
 
 function bookSearch() {
     search.addEventListener('keyup', (e) => {
 
+        console.log(`in bookSearch(), search.addEventListener: ${referrerUrl}`);
+
+        ulresults.innerHTML = '';
+
         const searchString = e.target.value.toLowerCase();
-        let librarySearchUrl = libraryUrl + searchString;
-        console.log(librarySearchUrl);
-        ul.innerHTML = '';
+        let librarySearchUrl = `${referrerUrl}/${searchString}`;
+        console.log(librarySearchUrl, {  referrer: "librarySearchUrl", referrerPolicy: "unsafe-url" });
+        //ul.innerHTML = '';
         fetch(librarySearchUrl)
             .then((resp) => resp.json())
             .then(function (data) {
@@ -90,7 +108,7 @@ function bookSearch() {
                     let span = createNode('span');
                     span.innerHTML = `${data.Word} ${data.Count}`;
                     append(li, span);
-                    append(ul, li);
+                    append(ulresults, li);
                 })
             })
             .catch(function (error) {
