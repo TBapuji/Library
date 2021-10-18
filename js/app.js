@@ -39,7 +39,11 @@ class App {
         // here you can do that mappy loopy business with append ul, li, span etc
         // then either append to the container element in the html file, or add the concatenated string to the innerHTML
 
-       // let list = getBookList();
+        // let list = getBookList();
+        const resultspane = document.getElementById('resultspane');
+        const booktitle = document.getElementById('booktitle');
+        
+        //booktitle.innerHTML = '';
         getBookList();
         defaultBookSearch();
 
@@ -62,6 +66,9 @@ function defaultBookSearch()
         let id = idval.getAttribute('id');
 
         ulresults.innerHTML = '';
+        resultspane.style.visibility = 'visible';
+
+        resultsbanner.innerHTML = 'Loading...';
         
         librarySearchUrl = libraryUrl + id;// + searchString;
 
@@ -78,7 +85,8 @@ function defaultBookSearch()
                     let span = createNode('span');
                     span.innerHTML = `${data.Word} ${data.Count}`;
                     append(li, span);
-                    append(ulresults , li);
+                    append(ulresults, li);
+                    resultsbanner.innerHTML = `Most common words in "${idval.innerHTML}"`;
                 })
             })
             .catch(function (error) {

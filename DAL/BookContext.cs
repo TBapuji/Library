@@ -45,11 +45,5 @@ namespace Library.DAL
             }
             return books;
         }
-
-        public string[] SearchResults()
-        {
-            return new string[] { };
-        }
-
     }
 }

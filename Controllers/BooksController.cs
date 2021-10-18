@@ -20,18 +20,6 @@ namespace Library.Controllers
             return bookService.GetBooks();
         }
 
-
-        //TODO - if we pass in extra params in signature with default web config values
-        // can we avoid the need 
-        // SE TINN C - WHAT ARE THE NAMES FOR THERES
-        //[Route("api/books/{Id}")]
-        //[Route("{Id}")]
-        //[HttpGet]
-        //public Book Books(int id)
-        //{
-        //    return bookService.GetBooks(id);
-        //}
-
         [Route("{Id}")]
         [HttpGet]
         public List<WordItem> Books(int id)
@@ -39,7 +27,6 @@ namespace Library.Controllers
             return bookService.SearchBook(id);
         }
 
-        //[Route("api/books/{Id}?query={query}")]
         [Route("{Id}/{query}")]
         [HttpGet]
         public List<WordItem> SearchBook(int id, string query)

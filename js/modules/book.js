@@ -30,7 +30,7 @@ function getBookList() {
                 //a.classList.add('tt');
                 //a.href = `${bookUrl}/${data.ID}`;
                 //a.innerHTML = `${data.ID} ${data.Title}`;
-                span.innerHTML = `${data.ID} ${data.Title}`;
+                span.innerHTML = `${data.Title}`;
                 span.id = `${data.ID}`;
                 append(ul, li);
                 append(li, span);
