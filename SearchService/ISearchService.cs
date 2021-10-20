@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Library.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Library.SearchService
 {
-    public class ISearchService
+    interface ISearchService
     {
+        List<WordItem> GetSearchResults(string[] wordsToSearch, string searchString = "");
     }
 }

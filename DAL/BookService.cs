@@ -5,6 +5,7 @@ using System.Web;
 using System.IO;
 using Library.Models;
 using Library.Helpers;
+using Library.SearchService;
 
 namespace Library.DAL
 {
@@ -72,50 +73,7 @@ namespace Library.DAL
             return words;
         }
 
-        //TODO - Sort this!!!
-        string IBookService.SearchBook(int Id)
-        {
-            throw new NotImplementedException();
-        }
-        public delegate List<WordItem> PerformCalculation(string[] wordsToSearch, string searchString);
-
-        List<WordItem> GetSearchResults(string[] wordsToSearch, string searchString = "")
-        {
-            List<WordItem> searchResults = new List<WordItem>();
-
-            if(String.IsNullOrWhiteSpace(searchString))
-            {
-                var matchQuery2 = (from word in wordsToSearch
-                                   where word.Length >= 5
-                                   group word by word
-                                              into grp
-                                   orderby grp.Count() descending
-                                   select new WordItem
-                                   {
-                                       Word = grp.Key,
-                                       Count = grp.Select(w => w).Count()
-                                   });
-                // .Take(10); -> causes a conversion exception here
-                var ordered = matchQuery2.OrderByDescending(m => m.Count).Take(10);
-                
-                return ordered.ToList();
-            }
-
-            var matchQuery = from word in wordsToSearch
-                              where word.ToLowerInvariant().StartsWith(searchString.ToLowerInvariant())
-                              group word by word
-                              into grp
-                              select new WordItem
-                              {
-                                  Word = grp.Key,
-                                  Count = grp.Select(w => w).Count()
-                              };
-
-            var matchQueryOrdered = matchQuery.OrderByDescending(m => m.Count);
-            
-            return matchQueryOrdered.ToList();
-        }
-
+        //public delegate List<WordItem> PerformSearch(string[] wordsToSearch, string searchString);
 
         public List<WordItem> SearchBook(int id, string searchString = "", int numberOfCharsSearchTrigger = 3, int numnberOfRecordsReturned = 10, int minWordLengthToReturn = 5)
         {
@@ -137,12 +95,13 @@ namespace Library.DAL
                     string[] words = content.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
 
                     words = StandardiseCase(words);
-        
+
                     // ***
                     // TODO - Cache "words" string array here for re-use
                     // ***
 
-                    searchResults = GetSearchResults(words, searchString);
+                    searchResults = Search.GetResults(words, searchString);
+
                     searchResults = CaptialiseFirstLetter(searchResults);
 
                     // HOW FAST IS THIS?? CAN WE MOVE IT DOWNSTREAM??

@@ -137,6 +137,7 @@
     <Compile Include="SearchService\DefaultSearchService.cs" />
     <Compile Include="SearchService\ISearchService.cs" />
     <Compile Include="SearchService\QueryableSearchService.cs" />
+    <Compile Include="SearchService\Search.cs" />
     <Compile Include="UnitTests\LibraryTests.cs" />
   </ItemGroup>
   <ItemGroup>

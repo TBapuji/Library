@@ -18,7 +18,17 @@ namespace Library.DAL
             throw new NotImplementedException();
         }
 
-        public string SearchBook(int Id)
+        List<Book> IBookService.GetBooks()
+        {
+            throw new NotImplementedException();
+        }
+
+        Book IBookService.GetBooks(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<WordItem> IBookService.SearchBook(int id, string searchString, int numberOfCharsSearchTrigger, int numnberOfRecordsReturned, int minWordLengthToReturn)
         {
             throw new NotImplementedException();
         }
