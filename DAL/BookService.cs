@@ -61,17 +61,6 @@ namespace Library.DAL
                             "’"
                           };
 
-        private List<string> GetBookTitles(string directoryPath)
-        {
-            string[] files = Directory.GetFiles(directoryPath);
-            List<string> bookTitles = new List<string>();
-            foreach(string file in files)
-            {
-                bookTitles.Add(Path.GetFileNameWithoutExtension(file));
-            }
-            return bookTitles;
-
-        }
 
         //TODO move to another file
         public static string[] StandardiseCase(string[] words)
