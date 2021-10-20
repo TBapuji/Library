@@ -75,7 +75,7 @@ namespace Library.DAL
 
         //public delegate List<WordItem> PerformSearch(string[] wordsToSearch, string searchString);
 
-        public List<WordItem> SearchBook(int id, string searchString = "", int numberOfCharsSearchTrigger = 3, int numnberOfRecordsReturned = 10, int minWordLengthToReturn = 5)
+        public List<WordItem> SearchBook(int id, string searchString = "")
         {
 
             //TODO -try to get from the Memroy Cache at this point.
