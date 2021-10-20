@@ -42,7 +42,7 @@ class App {
         // let list = getBookList();
         const resultspane = document.getElementById('resultspane');
         const booktitle = document.getElementById('booktitle');
-        
+
         //booktitle.innerHTML = '';
         getBookList();
         defaultBookSearch();
@@ -50,15 +50,14 @@ class App {
         bookSearch();
     }
 }
-function defaultBookSearch()
-{
-    ul.addEventListener('click', (e) => { 
+function defaultBookSearch() {
+    ul.addEventListener('click', (e) => {
         //const searchString = e.target.value.toLowerCase();
 
         // nearly there... 
         //var idval = e.currentTarget.querySelector('span[id]');
         //var idval = e.target.querySelector('span[id]');
-         //var idval = e.target;
+        //var idval = e.target;
         var idval = e.target.closest('span');
         //alert(idval==true);
         //alert(`${idval.getAttribute('id')}, ${idval.getAttribute('id')==null}`);
@@ -69,13 +68,13 @@ function defaultBookSearch()
         resultspane.style.visibility = 'visible';
 
         resultsbanner.innerHTML = 'Loading...';
-        
+
         librarySearchUrl = libraryUrl + id;// + searchString;
 
-            console.log(`librarySearchUrl: ${librarySearchUrl}`);
-        fetch(librarySearchUrl, { referrer: "librarySearchUrl", referrerPolicy:"unsafe-url" })
+        console.log(`librarySearchUrl: ${librarySearchUrl}`);
+        fetch(librarySearchUrl, { referrer: "librarySearchUrl", referrerPolicy: "unsafe-url" })
             .then((resp) => {
-                referrerUrl = resp.url; 
+                referrerUrl = resp.url;
                 return resp.json();
             })
             .then(function (data) {
@@ -101,28 +100,30 @@ function bookSearch() {
 
         console.log(`in bookSearch(), search.addEventListener: ${referrerUrl}`);
 
-        ulresults.innerHTML = '';
-
         const searchString = e.target.value.toLowerCase();
-        let librarySearchUrl = `${referrerUrl}/${searchString}`;
-        console.log(librarySearchUrl, {  referrer: "librarySearchUrl", referrerPolicy: "unsafe-url" });
-        //ul.innerHTML = '';
-        fetch(librarySearchUrl)
-            .then((resp) => resp.json())
-            .then(function (data) {
-                let resultlist = data;
-                return resultlist.map(function (data) {
-                    let li = createNode('li');
-                    let span = createNode('span');
-                    span.innerHTML = `${data.Word} ${data.Count}`;
-                    append(li, span);
-                    append(ulresults, li);
+        if (searchString.length > 2) {
+
+            let librarySearchUrl = `${referrerUrl}/${searchString}`;
+            console.log(librarySearchUrl, { referrer: "librarySearchUrl", referrerPolicy: "unsafe-url" });
+            ulresults.innerHTML = '';
+            fetch(librarySearchUrl)
+                .then((resp) => resp.json())
+                .then(function (data) {
+                    let resultlist = data;
+                    return resultlist.map(function (data) {
+                        let li = createNode('li');
+                        let span = createNode('span');
+                        span.innerHTML = `${data.Word} ${data.Count}`;
+                        append(li, span);
+                        append(ulresults, li);
+                    })
                 })
-            })
-            .catch(function (error) {
-                //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
-                console.log(`error...  ${error}`);
-            });
+                .catch(function (error) {
+                    //      resultsbanner.innerHTML = 'Sorry, an error occurred.';
+                    console.log(`error...  ${error}`);
+                });
+        }
+
     })
 }
 new App().go();
