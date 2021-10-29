@@ -8,7 +8,9 @@ function defaultBookSearch() {
     //const ulresults = document.getElementById('resultlist');
     consts.ul.addEventListener('click', (e) => {
         
-        
+
+        search.value = '';
+        //console.log(`search exists ${search.value}`);
         var idval = e.target.closest('span');
         let id = idval.getAttribute('id');
 
