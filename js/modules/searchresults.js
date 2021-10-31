@@ -18,8 +18,9 @@ function defaultBookSearch() {
 
         resultsbanner.innerHTML = 'Loading...';
 
-        lets.librarySearchUrl = consts.libraryUrl + id;// + searchString;
-        fetchSearchResults(lets.librarySearchUrl, true);
+        //lets.librarySearchUrl = consts.libraryUrl + id;// + searchString;
+        localStorage.lastBookUrl = consts.libraryUrl + id;
+        fetchSearchResults(localStorage.lastBookUrl);
     });
 }
 
@@ -38,18 +39,17 @@ function bookSearch() {
         const searchString = e.target.value.toLowerCase();
         if (searchString.length > consts.searchStringLength) {
 
-            lets.librarySearchUrl = `${lets.referrerUrl}/${searchString}`;
+            lets.librarySearchUrl = `${localStorage.lastBookUrl}/${searchString}`;
             consts.ulresults.innerHTML = '';
-            console.log(`lets.librarySearchUrl  ${lets.librarySearchUrl}`);
-            fetchSearchResults(lets.librarySearchUrl, false);
+            //console.log(`lets.librarySearchUrl  ${lets.librarySearchUrl}`);
+            fetchSearchResults(lets.librarySearchUrl);
         }
     })
 }
 
-function fetchSearchResults(url, persistUrl) {
+function fetchSearchResults(url) {
     fetch(url)
         .then((resp) => {
-            if (persistUrl) { lets.referrerUrl = resp.url; }
             return resp.json();
         })
         .then(data => data.map(data => listSearchResults(data, localStorage.bookTitle))
