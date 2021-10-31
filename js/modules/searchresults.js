@@ -20,7 +20,7 @@ function defaultBookSearch() {
 
         lets.librarySearchUrl = consts.libraryUrl + id;// + searchString;
 
-        fetch(lets.librarySearchUrl, { referrer: "librarySearchUrl", referrerPolicy: "unsafe-url" })
+        fetch(lets.librarySearchUrl)
             .then((resp) => {
                 lets.referrerUrl = resp.url;
                 return resp.json();
@@ -47,7 +47,7 @@ function bookSearch() {
     search.addEventListener('keyup', (e) => {
 
         const searchString = e.target.value.toLowerCase();
-        if (searchString.length > 2) {
+        if (searchString.length > consts.searchStringLength) {
 
             lets.librarySearchUrl = `${lets.referrerUrl}/${searchString}`;
             consts.ulresults.innerHTML = '';
