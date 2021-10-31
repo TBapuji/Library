@@ -8,7 +8,7 @@ function defaultBookSearch() {
 
         search.value = '';
 
-        var idval = e.target.closest('span');
+        let idval = e.target.closest('span');
         let id = idval.getAttribute('id');
 
         localStorage.bookTitle = idval.innerHTML;
@@ -19,18 +19,7 @@ function defaultBookSearch() {
         resultsbanner.innerHTML = 'Loading...';
 
         lets.librarySearchUrl = consts.libraryUrl + id;// + searchString;
-
-        fetch(lets.librarySearchUrl)
-            .then((resp) => {
-                lets.referrerUrl = resp.url;
-                return resp.json();
-            })
-            .then(data => data.map(data => listSearchResults(data, localStorage.bookTitle))
-            )
-            .catch(function (error) {
-                resultsbanner.innerHTML = 'Sorry, an error occurred.';
-                console.log(`error...  ${error}`);
-            });
+        fetchSearchResults(lets.librarySearchUrl, true);
     });
 }
 
@@ -51,12 +40,22 @@ function bookSearch() {
 
             lets.librarySearchUrl = `${lets.referrerUrl}/${searchString}`;
             consts.ulresults.innerHTML = '';
-            fetch(lets.librarySearchUrl)
-                .then((resp) => resp.json())
-                .then(data => data.map(data => listSearchResults(data, localStorage.bookTitle)))
-                .catch(function (error) {
-                    console.log(`error...  ${error}`);
-                });
+            console.log(`lets.librarySearchUrl  ${lets.librarySearchUrl}`);
+            fetchSearchResults(lets.librarySearchUrl, false);
         }
     })
+}
+
+function fetchSearchResults(url, persistUrl) {
+    fetch(url)
+        .then((resp) => {
+            if (persistUrl) { lets.referrerUrl = resp.url; }
+            return resp.json();
+        })
+        .then(data => data.map(data => listSearchResults(data, localStorage.bookTitle))
+        )
+        .catch(function (error) {
+            resultsbanner.innerHTML = 'Sorry, an error occurred.';
+            console.log(`error...  ${error}`);
+        });
 }
